@@ -36,8 +36,10 @@ def list_all_entries():
     for result in result_list:
         print "\t %s's phone number is %s" % (result.name, result.phone_number)
 
-# def quit():
+def quit():
     # Not necessary to do this in a function, but did it to practice
+    print "\nThanks for using the phonebook app\nBye, bye!\n"
+    return False
 
 is_using = True
 
