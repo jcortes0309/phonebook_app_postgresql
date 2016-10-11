@@ -2,7 +2,7 @@
 import pg
 
 db = pg.DB(dbname='phonebook_db')
-# db.debug = True
+db.debug = True
 
 def menu():
     print '''
@@ -19,14 +19,28 @@ def menu():
     answer = int(raw_input("> "))
     return answer
 
-# def lookup_entry():
+def lookup_entry():
+    name = raw_input("Enter name to search: ")
+    name = name.capitalize()
+    result_list = db.query(" select * from phonebook where name = '%s';"  % name).namedresult()
+    if len(result_list) > 0:
+        for result in result_list:
+            print "\n%s's phone number is: %s\n" % (name, result.phone_number)
+    else:
+        print "\n%s was not found in the phonebook\n" % name
 
 def set_entry():
         name = raw_input("Provide person's name: ").capitalize()
         phone_number = raw_input("Provide person's phone number: ")
         email = raw_input("Provide person's email: ")
-        set_person = db.insert('phonebook', name = name, phone_number = phone_number, email = email);
-        print "Entry saved for %s." % name
+        result_list = db.query("select count(id) from phonebook where name = '%s' or email = '%s'" % (name, email)).namedresult()
+        if len(result_list) > 0:
+            print "\nThis name and/or email information is already in the phonebook."
+            print "Please check the phonebook information before adding this entry."
+            list_all_entries()
+        else:
+            set_person = db.insert('phonebook', name = name, phone_number = phone_number, email = email);
+            print "Entry saved for %s." % name
 
 def delete_entry():
     name = raw_input("Provide the name of the person to delete from the phonebook: ").capitalize()
@@ -35,11 +49,11 @@ def delete_entry():
         id = result_list[0].id
         db.delete('phonebook', {'id': '%s' % id})
     else:
-        print "%s was not found in the phonebook" % name
+        print "\n%s was not found in the phonebook" % name
 
 def list_all_entries():
     result_list = db.query('select * from phonebook').namedresult()
-    print "\nYour phonebook contains the following information:"
+    print "\nThe phonebook contains the following information:"
     for result in result_list:
         print "\t %s's phone number is %s" % (result.name, result.phone_number)
 
