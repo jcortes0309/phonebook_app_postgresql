@@ -2,16 +2,16 @@
 import pg
 
 db = pg.DB(dbname='phonebook_db')
-db.debug = True
+# db.debug = True
 
 def menu():
     print '''
     Electronic Phone Book
     =====================
-    1\. Look up an entry
-    2\. Set an entry
-    3\. Delete an entry
-    4\. List all entries
+    1\. Look up a contact
+    2\. Create a contact
+    3\. Delete a contact
+    4\. List all contacts
     5\. Quit
 
     What do you want to do (1-5)?
