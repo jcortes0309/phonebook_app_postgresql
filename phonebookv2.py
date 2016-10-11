@@ -30,7 +30,11 @@ def set_entry():
 
 # def delete_entry():
 
-# def list_all_entries():
+def list_all_entries():
+    result_list = db.query('select * from phonebook').namedresult()
+    print "\nYour phonebook contains the following information:"
+    for result in result_list:
+        print "\t %s's phone number is %s" % (result.name, result.phone_number)
 
 # def quit():
     # Not necessary to do this in a function, but did it to practice
