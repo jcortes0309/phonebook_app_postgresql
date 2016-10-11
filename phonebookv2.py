@@ -28,7 +28,14 @@ def set_entry():
         set_person = db.insert('phonebook', name = name, phone_number = phone_number, email = email);
         print "Entry saved for %s." % name
 
-# def delete_entry():
+def delete_entry():
+    name = raw_input("Provide the name of the person to delete from the phonebook: ").capitalize()
+    result_list = db.query("select id from phonebook where name ilike '%s';" % name).namedresult()
+    if len(result_list) > 0:
+        id = result_list[0].id
+        db.delete('phonebook', {'id': '%s' % id})
+    else:
+        print "%s was not found in the phonebook" % name
 
 def list_all_entries():
     result_list = db.query('select * from phonebook').namedresult()
